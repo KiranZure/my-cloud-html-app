@@ -1,5 +1,4 @@
-
-iname: Build and Push HTML Web App to GHCR
+name: Build and Push HTML Web App to GHCR
 
 on:
   push:
@@ -30,3 +29,4 @@ jobs:
           push: true
           # Converts your username to lowercase automatically to prevent URL format errors
           tags: ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+
