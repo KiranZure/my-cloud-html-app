@@ -1,4 +1,4 @@
-name: Build and Push HTML Web App to GHCR
+iname: Build and Push HTML Web App to GHCR
 
 on:
   push:
@@ -19,12 +19,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # New Step: Convert the repo name to lowercase using standard Linux bash commands
+      - name: Create Lowercase Repository Name Variable
+        id: lowercase_repo
+        run: |
+          echo "REPO_LOWERCASE=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and Push Lightweight Image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
-          # This function intercepts your repo name and strips out all capital letters
-          tags: ghcr.io/${{ string.toLowerCase(github.repository) }}:latest
+          # Use the lowercase environment variable we just created above
+          tags: ghcr.io/${{ env.REPO_LOWERCASE }}:latest
 
