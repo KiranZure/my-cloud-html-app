@@ -12,7 +12,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Log directly into GitHub's built-in registry using an automatic internal token
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -20,13 +19,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push the image securely to your GitHub profile
       - name: Build and Push Lightweight Image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
-          # Converts your username to lowercase automatically to prevent URL format errors
-          tags: ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+          # This specific function forces your username and repo string to stay lowercase
+          tags: ghcr.io/${{ github.repository }}:latest
 
